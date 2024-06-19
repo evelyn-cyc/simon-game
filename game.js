@@ -4,9 +4,18 @@ var userClickedPattern = [];
 var level = 0;
 var start = false;
 var currentLevel = 0;
+var log = "success";
 
 //gamePattern.push(nextSequence());
 $(document).on("keypress", function(){
+    if(log == "wrong"){
+        log = "success"
+        start = false;
+        level = 0;
+        gamePattern = [];
+        userClickedPattern = [];
+        currentLevel = 0;
+    }
     if(!start){
         start = true;
         console.log(nextSequence());
@@ -14,7 +23,7 @@ $(document).on("keypress", function(){
 })
 
 $(document).on("click", function(event){
-    if(start){
+    if(start && log == "success"){
         playsound(event.target.id);
         animatePress(event.target.id);
         userClickedPattern.push(event.target.id);
@@ -34,6 +43,7 @@ function checkAnswer(){
         if(userClickedPattern[currentLevel] == gamePattern[currentLevel])
             currentLevel++;
         else{
+            log = "wrong";
             playsound("wrong");
             $("h1").text("Game Over, Press Any Key to Restart");
             $("body").addClass("game-over");
